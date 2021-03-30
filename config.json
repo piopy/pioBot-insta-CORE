@@ -1,5 +1,8 @@
 {
     "user_name":"",
     "password":"",
-    "hashtags":["cat","pizza"]
+    "hashtags":["cat","pizza"],
+    "name":"",
+    "dbname":"",
+    "server_uri":""
 }
