@@ -105,7 +105,7 @@ def interagisci_hashtag(nome):
     print("YAY!")
 
 def manage_direct():
-    threads=api.direct_threads(amount=99)
+    threads=api.direct_threads(amount=20)
     for t in threads:
         message=(api.direct_messages(t.id,1))[0]
         userid=message.user_id
@@ -135,10 +135,11 @@ if __name__ == '__main__':
             if datetime.now().hour==18 and datetime.now().minute==00:
                 upload_foto('https://i.pinimg.com/originals/79/1f/ca/791fca6132c5c51e1bac62a78dfac848.jpg','miao')
                 upload_storia('https://i.pinimg.com/originals/79/1f/ca/791fca6132c5c51e1bac62a78dfac848.jpg')
-                interagisci_hashtag(random.choice(hashtags))
+                #interagisci_hashtag(random.choice(hashtags))
+                time.sleep(60)
             if datetime.now().hour==23 and datetime.now().minute==00:
                 unfollow_infami()
-            time.sleep(1)
+            time.sleep(random.randint(3,50))
         except Exception as e: 
             print(e)
             os.remove(path_file)
