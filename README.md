@@ -2,7 +2,9 @@
 
 ## Installation
 > pip install -r requirements.txt
+
 > configure the .json file
+
 > py instaBot.py
 
 ## Features
