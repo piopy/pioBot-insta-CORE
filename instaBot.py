@@ -110,7 +110,7 @@ def interagisci_hashtag(nome,comment=False):
     print("YAY!")
 
 def manage_direct():
-    threads=api.direct_threads(amount=20)
+    threads=api.direct_threads(amount=6)
     for t in threads:
         time.sleep(random.randint(20,50))
         message=(api.direct_messages(t.id,1))[0]
@@ -118,7 +118,7 @@ def manage_direct():
         if userid != api.user_id_from_username(user_name):
             try:
                 print(api.username_from_user_id(userid)," says ",message.text)
-                api.direct_answer(t.id,answer(message.text)) #"non so ancora risponderti, sono solo un gatto!"
+                api.direct_answer(t.id,answer(message.text))
             except: api.direct_answer(t.id,"Ciccirinnella tenev na ijatta, che era sorda cieca e matta, quindi so solo leggere ciò che scrivi")
     return
 
@@ -129,26 +129,26 @@ def answer(messaggio):
 if __name__ == '__main__':
     blogin()
     time.sleep(10)
-    like_inquietanti(api.user_id_from_username('stefanomcfire'))
     print("loop start")
     while True:
         try:
-            ### manage direct ###
-            manage_direct()
             ### manage followers ###
             if (datetime.now().hour)%4==0 and datetime.now().minute==00:
                 followers=manage_followers()
             ### like followers ###
                 for f in followers: like_inquietanti(f)
             ### scheduled ###
-            if datetime.now().hour==18 and datetime.now().minute==00:
+            elif datetime.now().hour==18 and datetime.now().minute==00:
                 upload_foto('https://i.pinimg.com/originals/79/1f/ca/791fca6132c5c51e1bac62a78dfac848.jpg','miao')
                 upload_storia('https://i.pinimg.com/originals/79/1f/ca/791fca6132c5c51e1bac62a78dfac848.jpg')
                 #interagisci_hashtag(random.choice(hashtags))
                 time.sleep(60)
-            if datetime.now().hour==23 and datetime.now().minute==00:
+            elif datetime.now().hour==23 and datetime.now().minute==00:
                 unfollow_infami()
-            time.sleep(random.randint(40,90))
+            ### manage direct ###
+            else:
+                manage_direct()
+                time.sleep(random.randint(40,90))
         except Exception as e: 
             print(e)
             os.remove(path_file)
