@@ -69,13 +69,16 @@ def like_inquietanti(user):
     print("Processing ",api.username_from_user_id(user))
     print("Found ",len(lista)," medias")
     for l in lista: 
-        print('Media liked\n',l.id)
-        time.sleep(random.randint(1,39)/10)
-        api.media_like(l.id)
+        time.sleep(3)
+        if not user_name in api.media_likers(l.id):
+            time.sleep(random.randint(1,10))
+            api.media_like(l.id)
+            print('Media liked\n',l.id)
     print("ho messo like ai post di ",api.username_from_user_id(user))
 
 def upload_foto(url='https://i.pinimg.com/originals/79/1f/ca/791fca6132c5c51e1bac62a78dfac848.jpg',frase=''):
     path='./cat/'
+    if not os.path.exists(path): os.mkdir(path)
     foto=path+'cat.jpg'
     try:os.remove(foto)
     except:pass
@@ -85,6 +88,7 @@ def upload_foto(url='https://i.pinimg.com/originals/79/1f/ca/791fca6132c5c51e1ba
 
 def upload_storia(url='https://i.pinimg.com/originals/79/1f/ca/791fca6132c5c51e1bac62a78dfac848.jpg',frase=''):
     path='./cat/'
+    if not os.path.exists(path): os.mkdir(path)
     foto=path+'cat.jpg'
     try:os.remove(foto)
     except:pass
@@ -92,7 +96,7 @@ def upload_storia(url='https://i.pinimg.com/originals/79/1f/ca/791fca6132c5c51e1
     wget.download(url,foto)
     api.photo_upload_to_story(foto,'')
 
-def interagisci_hashtag(nome):
+def interagisci_hashtag(nome,comment=False):
     print("Interagendo con hashtag: ",nome)
     medias=api.hashtag_medias_recent(nome,amount=15)
     print("Found ",len(medias)," medias")
@@ -100,18 +104,22 @@ def interagisci_hashtag(nome):
         print("Liked hashpost ",m.id)
         api.media_like(m.id)
         time.sleep(random.randint(1,39)/10)
-        api.media_comment(m.id,text=random.choice(comments))
-        time.sleep(random.randint(10,90)/10)
+        if comment:
+            api.media_comment(m.id,text=random.choice(comments))
+            time.sleep(random.randint(10,90)/10)
     print("YAY!")
 
 def manage_direct():
     threads=api.direct_threads(amount=20)
     for t in threads:
+        time.sleep(random.randint(20,50))
         message=(api.direct_messages(t.id,1))[0]
         userid=message.user_id
         if userid != api.user_id_from_username(user_name):
-            print(api.username_from_user_id(userid)," says ",message.text)
-            api.direct_answer(t.id,answer(message.text)) #"non so ancora risponderti, sono solo un gatto!"
+            try:
+                print(api.username_from_user_id(userid)," says ",message.text)
+                api.direct_answer(t.id,answer(message.text)) #"non so ancora risponderti, sono solo un gatto!"
+            except: api.direct_answer(t.id,"Ciccirinnella tenev na ijatta, che era sorda cieca e matta, quindi so solo leggere ciò che scrivi")
     return
 
 def answer(messaggio):
@@ -121,6 +129,7 @@ def answer(messaggio):
 if __name__ == '__main__':
     blogin()
     time.sleep(10)
+    like_inquietanti(api.user_id_from_username('stefanomcfire'))
     print("loop start")
     while True:
         try:
@@ -139,7 +148,7 @@ if __name__ == '__main__':
                 time.sleep(60)
             if datetime.now().hour==23 and datetime.now().minute==00:
                 unfollow_infami()
-            time.sleep(random.randint(3,50))
+            time.sleep(random.randint(40,90))
         except Exception as e: 
             print(e)
             os.remove(path_file)
